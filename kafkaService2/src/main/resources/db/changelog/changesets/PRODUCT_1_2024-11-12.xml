@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    
+    <changeSet id="1" author="Adrian">
+        <createTable tableName="product">
+            <column name="id" type="uuid">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="quantity" type="bigint"/>
+            <column name="price" type="decimal"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2" author="Adrian">
+        <insert tableName="product">
+            <column name="id" value="be963c5f-3b0b-43d2-9304-227d9e3c2bcd"/>
+            <column name="name" value="Fridge"/>
+            <column name="quantity" value="10"/>
+            <column name="price" value="1100"/>
+        </insert>
+        <insert tableName="product">
+            <column name="id" value="424680d3-d9f4-4a37-8f1b-0e121832a999"/>
+            <column name="name" value="Headphones"/>
+            <column name="quantity" value="43"/>
+            <column name="price" value="420"/>
+        </insert>
+        <insert tableName="product">
+            <column name="id" value="a5d6e70b-635e-4b95-b8c7-9fd205bf3723"/>
+            <column name="name" value="TV"/>
+            <column name="quantity" value="23"/>
+            <column name="price" value="600"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

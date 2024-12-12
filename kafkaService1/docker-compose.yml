@@ -1,0 +1,21 @@
+version: '3.8'
+services:
+  kafka-1:
+    image: bitnami/kafka:3.9.0
+    container_name: kafka-1
+    environment:
+        # KRaft settings
+        KAFKA_CFG_NODE_ID: 1
+        KAFKA_CFG_PROCESS_ROLES: broker,controller
+        KAFKA_KRAFT_CLUSTER_ID: opMFJ5D9SBO2dWlCzjzhPA
+        # Listeners
+        KAFKA_CFG_CONTROLLER_QUORUM_VOTERS: 1@kafka-1:9093
+        KAFKA_CFG_LISTENERS: PLAINTEXT://:9192,CONTROLLER://:9093,EXTERNAL://:9091
+        KAFKA_CFG_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+        KAFKA_CFG_ADVERTISED_LISTENERS: PLAINTEXT://kafka-1:9192, EXTERNAL://localhost:9091
+        KAFKA_CFG_CONTROLLER_LISTENER_NAMES: CONTROLLER
+        KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT
+    ports:
+      - '9091:9091'
+    volumes:
+      - C:\tmp\docker-kafka-volumes\kafka-1:/bitnami/kafka

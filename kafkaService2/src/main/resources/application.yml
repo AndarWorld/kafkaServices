@@ -1,0 +1,56 @@
+server:
+  port: 8081
+
+kafka:
+  topics:
+    replication-factor: ${REPLICATION_FACTOR:1}
+    partitions: ${PARTITIONS:1}
+    names:
+      product-create-event-topic: "product-create-event-topic"
+      product-result-event-topic: "product-result-event-topic"
+
+spring:
+  application:
+    name: kafka-service-2
+  liquibase:
+    change-log: db/changelog/changelog.xml
+  datasource:
+    url: jdbc:h2:mem:testdb
+    username: u
+    password: 1
+  h2:
+    console:
+      enabled: true
+  kafka:
+    admin:
+      properties:
+        bootstrap.servers: http://localhost:9091
+    producer:
+      bootstrap-servers: http://localhost:9091
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      acks: all
+      properties:
+        enable.idempotence: true
+        delivery.timeout.ms: 60000
+        request.timeout.ms: 5000
+        max.in.flight.requests.per.connection: 5
+      transaction-id-prefix: kafka1-transaction-${random.value}-
+    consumer:
+      bootstrap-servers: http://localhost:9091
+      key-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      group-id: kafka-2
+      isolation-level: read_committed
+      auto-offset-reset: latest
+      properties:
+        spring.deserializer.key.delegate.class: org.apache.kafka.common.serializer.StringDeserializer
+        spring.deserializer.value.delegate.class: org.springframework.kafka.support.serializer.JsonDeserializer
+        spring.json.trusted.packages: "org.andarworld.core.*"
+
+logging:
+  level:
+    root: info
+    org.andarworld: debug
+    org.springframework.kafka.transaction: trace
+    org.springframework.transaction: trace
